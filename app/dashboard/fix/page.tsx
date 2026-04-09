@@ -104,11 +104,13 @@ export default function FixPage() {
 
   const handleCheckout = async () => {
     setCheckoutLoading(true);
+    setError('');
     try {
       const url = await createCheckout(FIX_CV_PRODUCT_ID);
       window.location.href = url;
-    } catch {
-      setError('Could not start checkout. Please try again.');
+    } catch (err: unknown) {
+      const e = err as { message?: string };
+      setError(e.message || 'Could not start checkout. Please try again.');
       setCheckoutLoading(false);
     }
   };
