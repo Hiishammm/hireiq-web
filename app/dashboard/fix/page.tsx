@@ -30,9 +30,23 @@ export default function FixPage() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) { router.replace('/auth'); return; }
       setUserEmail(session.user.email || '');
+
+      // Check payment status on load — show wall immediately if not paid
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('fix_cv_used')
+        .eq('id', session.user.id)
+        .single();
+
+      // fix_cv_used === false means paid + not yet used → allow upload
+      // anything else (null or true) → payment required
+      if (!profile || profile.fix_cv_used !== false) {
+        setPaymentRequired(true);
+      }
+
       setAuthLoading(false);
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
