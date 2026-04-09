@@ -14,7 +14,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://hireiq-backend-production-3354.up.railway.app https://*.lemonsqueezy.com",
       "frame-ancestors 'none'",
     ].join('; '),
   },
